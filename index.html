@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What Kind of Travel Memory Keeper Are You? ✈️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --purple: #6B4EFF;
+    --purple-light: #EDE9FF;
+    --purple-dark: #3D2DBB;
+    --gold: #E8A020;
+    --white: #FFFFFF;
+    --off-white: #F9F7FF;
+    --text: #1A1033;
+    --text-muted: #6B6487;
+    --border: rgba(107,78,255,0.18);
+    --card-bg: rgba(255,255,255,0.92);
+    --shadow: 0 8px 40px rgba(107,78,255,0.13);
+    --radius: 18px;
+    --radius-sm: 10px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    color: var(--text);
+    min-height: 100vh;
+    background: #0e0c1a;
+    overflow-x: hidden;
+  }
+
+  /* ── Background ── */
+  #bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      linear-gradient(to bottom, rgba(14,12,26,0.55) 0%, rgba(14,12,26,0.72) 60%, rgba(14,12,26,0.92) 100%),
+      url('https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1600&q=80&auto=format&fit=crop') center/cover no-repeat;
+    transition: background-image 0.9s ease;
+  }
+
+  /* BG images per section */
+  #bg.sec1 { background-image: linear-gradient(to bottom, rgba(14,12,26,0.5) 0%, rgba(14,12,26,0.75) 100%), url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1600&q=80&auto=format&fit=crop') }
+  #bg.sec2 { background-image: linear-gradient(to bottom, rgba(14,12,26,0.5) 0%, rgba(14,12,26,0.75) 100%), url('https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?w=1600&q=80&auto=format&fit=crop') }
+  #bg.sec3 { background-image: linear-gradient(to bottom, rgba(14,12,26,0.5) 0%, rgba(14,12,26,0.75) 100%), url('https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1600&q=80&auto=format&fit=crop') }
+  #bg.sec4 { background-image: linear-gradient(to bottom, rgba(14,12,26,0.5) 0%, rgba(14,12,26,0.75) 100%), url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1600&q=80&auto=format&fit=crop') }
+  #bg.final { background-image: linear-gradient(to bottom, rgba(14,12,26,0.5) 0%, rgba(14,12,26,0.75) 100%), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80&auto=format&fit=crop') }
+
+  /* ── Layout ── */
+  #app {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2rem 1rem 5rem;
+  }
+
+  /* ── Welcome Screen ── */
+  #welcome {
+    max-width: 560px;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    animation: fadeUp 0.7s ease both;
+  }
+  .welcome-badge {
+    display: inline-block;
+    background: rgba(232,160,32,0.18);
+    color: var(--gold);
+    border: 1px solid rgba(232,160,32,0.4);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    margin-bottom: 1.5rem;
+  }
+  .welcome-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.18;
+    margin-bottom: 1rem;
+  }
+  .welcome-title em { font-style: italic; color: #C9BEFF; }
+  .welcome-sub {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.72);
+    margin-bottom: 2rem;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2.25rem;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .meta-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+  .start-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 15px 36px;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+    box-shadow: 0 4px 24px rgba(107,78,255,0.45);
+  }
+  .start-btn:hover { background: var(--purple-dark); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(107,78,255,0.55); }
+  .start-btn svg { width: 18px; height: 18px; transition: transform 0.18s; }
+  .start-btn:hover svg { transform: translateX(3px); }
+
+  /* ── Quiz Body ── */
+  #quiz-body { width: 100%; max-width: 560px; display: none; }
+
+  /* ── Progress ── */
+  .progress-wrap {
+    margin-bottom: 1.75rem;
+    animation: fadeUp 0.4s ease both;
+  }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-section {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .progress-count { font-size: 12px; color: rgba(255,255,255,0.45); }
+  .progress-track {
+    height: 3px;
+    background: rgba(255,255,255,0.14);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), #A78BFF);
+    border-radius: 999px;
+    transition: width 0.4s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── Question Card ── */
+  .q-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: var(--radius);
+    padding: 2rem 2rem 1.5rem;
+    display: none;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.45s cubic-bezier(.4,0,.2,1) both;
+  }
+  .q-card.active { display: block; }
+
+  .section-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--purple-light);
+    color: var(--purple);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 3px 12px;
+    margin-bottom: 1rem;
+  }
+  .section-pill .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--purple); opacity: 0.5; }
+
+  .q-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+  }
+  .q-sub {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+  }
+
+  .scenario-box {
+    background: linear-gradient(135deg, #EDE9FF 0%, #F0EBFF 100%);
+    border-left: 3px solid var(--purple);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 1rem 1.15rem;
+    margin-bottom: 1.25rem;
+    font-size: 14px;
+    color: #3D2DBB;
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* ── Option Buttons ── */
+  .options-grid { display: flex; flex-direction: column; gap: 9px; }
+
+  .opt-btn {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px 16px;
+    border: 1.5px solid rgba(107,78,255,0.15);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    background: #fff;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px;
+    font-weight: 400;
+    text-align: left;
+    transition: border-color 0.16s, background 0.16s, transform 0.12s, box-shadow 0.16s;
+    width: 100%;
+  }
+  .opt-btn:hover {
+    border-color: var(--purple);
+    background: var(--purple-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(107,78,255,0.12);
+  }
+  .opt-btn.selected {
+    border-color: var(--purple);
+    background: var(--purple-light);
+    font-weight: 500;
+    color: var(--purple-dark);
+    box-shadow: 0 4px 16px rgba(107,78,255,0.18);
+  }
+  .opt-btn.selected .opt-icon-wrap { background: var(--purple); }
+  .opt-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: rgba(107,78,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    transition: background 0.16s;
+  }
+  .check-mark {
+    margin-left: auto;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(107,78,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .opt-btn.selected .check-mark { background: var(--purple); border-color: var(--purple); }
+  .check-mark svg { display: none; }
+  .opt-btn.selected .check-mark svg { display: block; }
+
+  /* ── Emoji Scale ── */
+  .emoji-scale { display: flex; gap: 8px; margin-top: 0.5rem; flex-wrap: wrap; }
+  .emoji-opt {
+    flex: 1;
+    min-width: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 8px;
+    border: 1.5px solid rgba(107,78,255,0.15);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    background: #fff;
+    transition: border-color 0.16s, background 0.16s, transform 0.12s;
+    font-size: 26px;
+    text-align: center;
+  }
+  .emoji-opt:hover { border-color: var(--purple); background: var(--purple-light); transform: translateY(-2px); }
+  .emoji-opt.selected { border-color: var(--purple); background: var(--purple-light); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(107,78,255,0.2); }
+  .emoji-opt span { font-size: 11px; color: var(--text-muted); line-height: 1.3; font-family: 'DM Sans', sans-serif; }
+  .emoji-opt.selected span { color: var(--purple-dark); font-weight: 500; }
+
+  /* ── Textarea ── */
+  .textarea-q {
+    width: 100%;
+    border: 1.5px solid rgba(107,78,255,0.18);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: #fff;
+    resize: vertical;
+    min-height: 110px;
+    outline: none;
+    transition: border-color 0.16s, box-shadow 0.16s;
+    line-height: 1.6;
+  }
+  .textarea-q:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(107,78,255,0.1); }
+
+  .hint-pills { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+  .hint-pill {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: #F0EBFF;
+    color: var(--purple-dark);
+    border: 1px solid rgba(107,78,255,0.2);
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+  }
+  .hint-pill:hover { background: var(--purple-light); transform: translateY(-1px); }
+
+  /* ── Email Input ── */
+  .email-input-wrap { position: relative; }
+  .email-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--purple);
+    font-size: 16px;
+    pointer-events: none;
+  }
+  .email-input {
+    width: 100%;
+    border: 1.5px solid rgba(107,78,255,0.18);
+    border-radius: var(--radius-sm);
+    padding: 13px 14px 13px 40px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: #fff;
+    outline: none;
+    transition: border-color 0.16s, box-shadow 0.16s;
+  }
+  .email-input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(107,78,255,0.1); }
+  .email-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; line-height: 1.5; }
+
+  /* ── Nav Row ── */
+  .nav-row { display: flex; align-items: center; justify-content: space-between; margin-top: 1.5rem; }
+  .nav-back {
+    display: flex; align-items: center; gap: 6px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid rgba(107,78,255,0.2);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-back:hover { background: #f5f3ff; color: var(--purple); }
+  .nav-back:disabled { opacity: 0.3; cursor: default; }
+  .nav-next {
+    display: flex; align-items: center; gap: 8px;
+    padding: 11px 26px;
+    border-radius: 999px;
+    font-size: 14.5px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background: var(--purple);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.16s, transform 0.12s, box-shadow 0.16s;
+    box-shadow: 0 4px 18px rgba(107,78,255,0.35);
+  }
+  .nav-next:hover { background: var(--purple-dark); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(107,78,255,0.45); }
+  .nav-next svg { width: 15px; height: 15px; }
+  .submit-btn {
+    background: linear-gradient(135deg, #E8A020, #F5B940);
+    box-shadow: 0 4px 18px rgba(232,160,32,0.4);
+  }
+  .submit-btn:hover { background: linear-gradient(135deg, #D08910, #E8A020); box-shadow: 0 6px 24px rgba(232,160,32,0.5); }
+
+  /* ── Thank You ── */
+  #thank-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: var(--radius);
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    display: none;
+    animation: fadeUp 0.55s ease both;
+    max-width: 560px;
+    width: 100%;
+    margin: auto;
+  }
+  .thank-icon { font-size: 52px; margin-bottom: 1.25rem; display: block; }
+  .thank-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  .thank-sub { font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 380px; margin: 0 auto; }
+  .thank-divider { height: 1px; background: rgba(107,78,255,0.12); margin: 1.5rem auto; max-width: 80px; }
+  .thank-share { font-size: 13px; color: var(--text-muted); margin-bottom: 1rem; }
+  .share-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .share-btn {
+    padding: 9px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid rgba(107,78,255,0.2);
+    background: #fff;
+    color: var(--purple-dark);
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: background 0.15s;
+  }
+  .share-btn:hover { background: var(--purple-light); }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Floating decorative orbs ── */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.18;
+    z-index: 0;
+  }
+  .orb1 { width: 340px; height: 340px; background: radial-gradient(circle, #8B6EFF, transparent); top: -80px; right: -80px; }
+  .orb2 { width: 260px; height: 260px; background: radial-gradient(circle, #E8A020, transparent); bottom: 60px; left: -60px; }
+
+  /* ── Mobile ── */
+  @media (max-width: 540px) {
+    #app { padding: 1.5rem 0.85rem 4rem; }
+    .q-card { padding: 1.5rem 1.25rem 1.25rem; }
+    .emoji-scale { gap: 5px; }
+    .emoji-opt { min-width: 58px; padding: 10px 5px; font-size: 22px; }
+    .welcome-title { font-size: 1.75rem; }
+    .q-text { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bg"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div id="app">
+
+  <!-- Welcome -->
+  <div id="welcome">
+    <div class="welcome-badge">✈️ &nbsp; 3-minute quiz</div>
+    <h1 class="welcome-title">What kind of <em>travel memory</em> keeper are you?</h1>
+    <p class="welcome-sub">This quick quiz will help us understand how you preserve your travel memories — and you might just discover your own travel style along the way.</p>
+    <div class="meta-row">
+      <span class="meta-item">📍 Made for Sri Lankan travelers</span>
+      <span class="meta-dot"></span>
+      <span class="meta-item">10 questions</span>
+      <span class="meta-dot"></span>
+      <span class="meta-item">100% free</span>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">
+      Let's begin
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <!-- Quiz -->
+  <div id="quiz-body">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-section" id="prog-label">Part 1 of 4: Your travel personality</span>
+        <span class="progress-count" id="prog-num">1 / 10</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="prog-fill" style="width:10%"></div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card active" id="q1" data-section="1">
+      <div class="section-pill"><span class="dot"></span>Your travel personality</div>
+      <div class="q-text">Which traveler are you?</div>
+      <div class="q-sub">Pick the one that describes you best.</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="select(this,'q1')">
+          <span class="opt-icon-wrap">🏖️</span>The beach explorer
+          <span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <button class="opt-btn" onclick="select(this,'q1')">
+          <span class="opt-icon-wrap">🗺️</span>The frequent adventurer
+          <span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <button class="opt-btn" onclick="select(this,'q1')">
+          <span class="opt-icon-wrap">💍</span>The romantic / honeymoon traveler
+          <span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <button class="opt-btn" onclick="select(this,'q1')">
+          <span class="opt-icon-wrap">🎁</span>The thoughtful gift giver
+          <span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <button class="opt-btn" onclick="select(this,'q1')">
+          <span class="opt-icon-wrap">📸</span>The memory collector
+          <span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+      </div>
+      <div class="nav-row">
+        <button class="nav-back" disabled>← Back</button>
+        <button class="nav-next" onclick="next(1)">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card" id="q2" data-section="1">
+      <div class="section-pill"><span class="dot"></span>Your travel personality</div>
+      <div class="q-text">How often do you travel?</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="select(this,'q2')"><span class="opt-icon-wrap">✈️</span>Multiple times a year<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q2')"><span class="opt-icon-wrap">🌴</span>Once a year<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q2')"><span class="opt-icon-wrap">🌙</span>Every couple of years<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q2')"><span class="opt-icon-wrap">💭</span>Rarely, but I dream about it<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </div>
+      <div class="nav-row">
+        <button class="nav-back" onclick="prev(2)">← Back</button>
+        <button class="nav-next" onclick="next(2)">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card" id="q3" data-section="2">
+      <div class="section-pill"><span class="dot"></span>Your photo habits</div>
+      <div class="q-text">How many photos do you usually take on a trip?</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="select(this,'q3')"><span class="opt-icon-wrap">📷</span>A few memories (&lt;20)<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q3')"><span class="opt-icon-wrap">📸</span>Enough for an album (20–50)<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q3')"><span class="opt-icon-wrap">🎞️</span>My camera never rests (51–100)<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q3')"><span class="opt-icon-wrap">📱</span>I practically document everything (100+)<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </div>
+      <div class="nav-row">
+        <button class="nav-back" onclick="prev(3)">← Back</button>
+        <button class="nav-next" onclick="next(3)">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card" id="q4" data-section="2">
+      <div class="section-pill"><span class="dot"></span>Your photo habits</div>
+      <div class="q-text">What happens to your travel photos after a trip?</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="select(this,'q4')"><span class="opt-icon-wrap">📲</span>They sit on my phone forever<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q4')"><span class="opt-icon-wrap">☁️</span>Backed up to Google Photos / iCloud<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q4')"><span class="opt-icon-wrap">📱</span>Posted on Instagram and forgotten<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q4')"><span class="opt-icon-wrap">🖼️</span>I print or frame a few favorites<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q4')"><span class="opt-icon-wrap">📔</span>I already make scrapbooks or albums<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </div>
+      <div class="nav-row">
+        <button class="nav-back" onclick="prev(4)">← Back</button>
+        <button class="nav-next" onclick="next(4)">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card" id="q5" data-section="3">
+      <div class="section-pill"><span class="dot"></span>Your dream memory book</div>
+      <div class="q-text">Imagine this...</div>
+      <div class="scenario-box">You return from an amazing trip to Ella or Thailand with 300 photos on your phone. A few days later, you receive a beautifully designed book with your favourite memories inside. How would you feel?</div>
+      <div class="emoji-scale">
+        <div class="emoji-opt" onclick="selectEmoji(this,'q5')">😍<span>Would absolutely love it</span></div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'q5')">😊<span>Sounds nice</span></div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'q5')">😐<span>Maybe</span></div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'q5')">🙅<span>Not for me</span></div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-back" onclick="prev(5)">← Back</button>
+        <button class="nav-next" onclick="next(5)">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card" id="q6" data-section="3">
+      <div class="section-pill"><span class="dot"></span>Your dream memory book</div>
+      <div class="q-text">If someone gifted you a personalised travel photo book, your reaction would be:</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="select(this,'q6')"><span class="opt-icon-wrap">🥹</span>I would treasure it forever<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q6')"><span class="opt-icon-wrap">😍</span>I'd love it and display it proudly<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q6')"><span class="opt-icon-wrap">😊</span>I'd enjoy looking through it occasionally<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q6')"><span class="opt-icon-wrap">😐</span>Nice gesture, but not essential<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </div>
+      <div class="nav-row">
+        <button class="nav-back" onclick="prev(6)">← Back</button>
+        <button class="nav-next" onclick="next(6)">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card" id="q7" data-section="3">
+      <div class="section-pill"><span class="dot"></span>Your dream memory book</div>
+      <div class="q-text">How likely are you to buy a personalised travel photo book?</div>
+      <div class="emoji-scale">
+        <div class="emoji-opt" onclick="selectEmoji(this,'q7')">🛒<span>Definitely would buy</span></div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'q7')">🤔<span>Probably would</span></div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'q7')">😐<span>Not sure</span></div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'q7')">😕<span>Probably wouldn't</span></div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'q7')">🙅<span>Definitely not</span></div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-back" onclick="prev(7)">← Back</button>
+        <button class="nav-next" onclick="next(7)">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card" id="q8" data-section="3">
+      <div class="section-pill"><span class="dot"></span>Your dream memory book</div>
+      <div class="q-text">What would make your dream travel photo book special?</div>
+      <div class="q-sub">Describe your ideal — or tap a suggestion to add it.</div>
+      <textarea class="textarea-q" id="q8-text" placeholder="Tell us what would make it perfect for you..."></textarea>
+      <div class="hint-pills">
+        <span class="hint-pill" onclick="addHint('Maps of places visited')">🗺️ Maps</span>
+        <span class="hint-pill" onclick="addHint('Space for handwritten notes')">✍️ Handwritten notes</span>
+        <span class="hint-pill" onclick="addHint('Ticket stubs & souvenirs')">🎫 Ticket stubs</span>
+        <span class="hint-pill" onclick="addHint('AI-generated travel stories')">✨ AI stories</span>
+        <span class="hint-pill" onclick="addHint('Polaroid-style layouts')">📷 Polaroid layouts</span>
+        <span class="hint-pill" onclick="addHint('Quotes and captions')">💬 Captions</span>
+        <span class="hint-pill" onclick="addHint('Timeline of the journey')">📅 Timeline</span>
+      </div>
+      <div class="nav-row">
+        <button class="nav-back" onclick="prev(8)">← Back</button>
+        <button class="nav-next" onclick="next(8)">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-card" id="q9" data-section="4">
+      <div class="section-pill"><span class="dot"></span>Final thoughts</div>
+      <div class="q-text">What feels like a fair price for a 30-page personalised travel photo book?</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="select(this,'q9')"><span class="opt-icon-wrap">💵</span>Under Rs. 7,500<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q9')"><span class="opt-icon-wrap">💳</span>Rs. 7,500 – 10,500<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q9')"><span class="opt-icon-wrap">💰</span>Rs. 10,500 – 12,500<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <button class="opt-btn" onclick="select(this,'q9')"><span class="opt-icon-wrap">🏆</span>Rs. 12,500+ for premium quality<span class="check-mark"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </div>
+      <div class="nav-row">
+        <button class="nav-back" onclick="prev(9)">← Back</button>
+        <button class="nav-next" onclick="next(9)">Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-card" id="q10" data-section="4">
+      <div class="section-pill"><span class="dot"></span>Final thoughts</div>
+      <div class="q-text">🎁 Want to win a free personalised travel photo book?</div>
+      <div class="q-sub">Drop your email to enter our launch giveaway and be the first to know when we go live. No spam, ever — we promise.</div>
+      <div class="email-input-wrap">
+        <span class="email-icon">✉️</span>
+        <input class="email-input" type="email" id="q10-email" placeholder="your@email.com" />
+      </div>
+      <p class="email-note">Optional — you can skip this and still submit.</p>
+      <div class="nav-row">
+        <button class="nav-back" onclick="prev(10)">← Back</button>
+        <button class="nav-next submit-btn" onclick="submitQuiz()">Submit &nbsp;🎉</button>
+      </div>
+    </div>
+
+  </div><!-- /quiz-body -->
+
+  <!-- Thank You -->
+  <div id="thank-card">
+    <span class="thank-icon">✈️</span>
+    <h2 class="thank-title">Thank you for sharing!</h2>
+    <p class="thank-sub">You've helped us understand how Sri Lankans preserve their travel memories. May your next adventure be unforgettable. 📸</p>
+
+    <!-- Shown only when CSV fallback was used -->
+    <div id="thank-csv-note" style="display:none; margin-top:1.25rem; background:#FFF8EC; border:1px solid rgba(232,160,32,0.35); border-radius:10px; padding:0.85rem 1rem; font-size:13px; color:#7A4F00; line-height:1.6; text-align:left;">
+      📥 <strong>Your response was saved as a CSV file</strong> — check your downloads folder and send it to the quiz owner to be included in the results.
+    </div>
+
+    <div class="thank-divider"></div>
+    <p class="thank-share">Know a fellow traveler? Share this quiz:</p>
+    <div class="share-btns">
+      <button class="share-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
+      <button class="share-btn" onclick="shareCopy()">🔗 Copy link</button>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  ✏️  YOUR ONLY REQUIRED SETUP STEP
+//
+//  Paste your Google Apps Script Web App URL below.
+//  Full setup guide is in the README / instructions below.
+//  Leave as-is while testing — CSV fallback works without it.
+// ═══════════════════════════════════════════════════════════════
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzfW1i5qPXj4p37b-qBJLJPEqGY5MKp-m4vru3azQcjCXFQOQBKMLSk2Hvkjvsnk2lt/exec';
+
+// ── Column headers (must match Apps Script) ──────────────────
+const HEADERS = [
+  'Timestamp (Colombo)',
+  'Q1 – Traveler type',
+  'Q2 – Travel frequency',
+  'Q3 – Photos per trip',
+  'Q4 – What happens to photos',
+  'Q5 – Feeling about receiving a book',
+  'Q6 – Reaction if gifted a book',
+  'Q7 – Purchase likelihood',
+  'Q8 – Dream book features',
+  'Q9 – Acceptable price range',
+  'Email (giveaway entry)',
+];
+
+// ── State ─────────────────────────────────────────────────────
+const sections  = ['','Part 1 of 4: Your travel personality','Part 1 of 4: Your travel personality','Part 2 of 4: Your photo habits','Part 2 of 4: Your photo habits','Part 3 of 4: Your dream memory book','Part 3 of 4: Your dream memory book','Part 3 of 4: Your dream memory book','Part 3 of 4: Your dream memory book','Part 4 of 4: Final thoughts','Part 4 of 4: Final thoughts'];
+const bgClasses = ['','sec1','sec1','sec2','sec2','sec3','sec3','sec3','sec3','sec4','sec4'];
+const bg        = document.getElementById('bg');
+const answers   = {};
+
+// ── Navigation ────────────────────────────────────────────────
+function startQuiz() {
+  document.getElementById('welcome').style.display = 'none';
+  document.getElementById('quiz-body').style.display = 'block';
+  updateBg(1);
+}
+
+function updateBg(n) { bg.className = bgClasses[n] || ''; }
+
+function select(btn, q) {
+  document.querySelectorAll('#'+q+' .opt-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[q] = btn.innerText.replace(/[\n\r]+/g,' ').trim();
+}
+
+function selectEmoji(el, q) {
+  document.querySelectorAll('#'+q+' .emoji-opt').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[q] = el.innerText.replace(/[\n\r]+/g,' ').trim();
+}
+
+function addHint(text) {
+  const ta = document.getElementById('q8-text');
+  if (ta.value && !ta.value.endsWith(', ')) ta.value += ', ';
+  ta.value += text;
+  ta.focus();
+}
+
+function showQ(n) {
+  for (let i = 1; i <= 10; i++) {
+    const c = document.getElementById('q'+i);
+    if (c) c.classList.remove('active');
+  }
+  const card = document.getElementById('q'+n);
+  if (card) {
+    card.classList.add('active');
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = '';
+  }
+  document.getElementById('prog-fill').style.width = (n*10)+'%';
+  document.getElementById('prog-num').textContent   = n+' / 10';
+  document.getElementById('prog-label').textContent = sections[n];
+  updateBg(n);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function next(n) { if (n < 10) showQ(n+1); }
+function prev(n) { if (n > 1)  showQ(n-1); }
+
+// ── Build the row of data ─────────────────────────────────────
+function buildRow() {
+  const dreamText = document.getElementById('q8-text').value.trim();
+  const emailVal  = document.getElementById('q10-email').value.trim();
+  if (dreamText) answers['q8']    = dreamText;
+  if (emailVal)  answers['email'] = emailVal;
+
+  return [
+    new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' }),
+    answers['q1']    || '(skipped)',
+    answers['q2']    || '(skipped)',
+    answers['q3']    || '(skipped)',
+    answers['q4']    || '(skipped)',
+    answers['q5']    || '(skipped)',
+    answers['q6']    || '(skipped)',
+    answers['q7']    || '(skipped)',
+    answers['q8']    || '(skipped)',
+    answers['q9']    || '(skipped)',
+    answers['email'] || '(not provided)',
+  ];
+}
+
+// ── Submit: try Google Sheets first, CSV fallback on failure ──
+async function submitQuiz() {
+  const row       = buildRow();
+  const submitBtn = document.querySelector('.submit-btn');
+  submitBtn.innerHTML = '⏳ &nbsp;Sending...';
+  submitBtn.disabled  = true;
+
+  // If no Script URL configured, go straight to CSV download
+  if (!SHEET_URL || SHEET_URL === 'YOUR_GOOGLE_SCRIPT_URL') {
+    downloadCSV(row);
+    showThankYou(true);
+    return;
+  }
+
+  try {
+    // Google Apps Script uses no-cors, so we can't read the response body —
+    // but a network-level success means it reached the sheet.
+    await fetch(SHEET_URL, {
+      method:  'POST',
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ row }),
+    });
+    showThankYou(false);
+  } catch (err) {
+    // Network error → silently fall back to CSV so the user isn't stuck
+    console.warn('Sheet submission failed, falling back to CSV:', err);
+    downloadCSV(row);
+    showThankYou(true);
+  }
+}
+
+// ── CSV builder & downloader ──────────────────────────────────
+function escapeCSV(v) {
+  const s = String(v ?? '');
+  return (s.includes(',') || s.includes('"') || s.includes('\n'))
+    ? '"' + s.replace(/"/g, '""') + '"'
+    : s;
+}
+
+function downloadCSV(row) {
+  const headerLine = HEADERS.map(escapeCSV).join(',');
+  const dataLine   = row.map(escapeCSV).join(',');
+  const csv        = '\uFEFF' + headerLine + '\r\n' + dataLine + '\r\n'; // BOM for Excel
+  const blob       = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url        = URL.createObjectURL(blob);
+  const a          = document.createElement('a');
+  const ts         = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  a.href           = url;
+  a.download       = 'quiz-response-' + ts + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ── Thank-you screen ──────────────────────────────────────────
+function showThankYou(usedCSV) {
+  document.getElementById('quiz-body').style.display = 'none';
+  const card = document.getElementById('thank-card');
+  card.style.display = 'block';
+
+  if (usedCSV) {
+    const note = document.getElementById('thank-csv-note');
+    if (note) note.style.display = 'block';
+  }
+
+  bg.className = 'final';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Share helpers ─────────────────────────────────────────────
+function shareWhatsApp() {
+  window.open('https://wa.me/?text=' + encodeURIComponent('✈️ Take this quick quiz to discover your travel memory style! ' + location.href));
+}
+
+function shareCopy() {
+  navigator.clipboard.writeText(location.href)
+    .then(() => alert('Link copied! Share it with fellow travelers. 📸'));
+}
+</script>
+</body>
+</html>
