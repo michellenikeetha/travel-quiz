@@ -637,7 +637,7 @@ async function submitQuiz() {
   submitBtn.innerHTML = '⏳ &nbsp;Sending...';
   submitBtn.disabled  = true;
 
-  if (!SHEET_URL || SHEET_URL === 'YOUR_GOOGLE_SCRIPT_URL') {
+  if (!SHEET_URL || SHEET_URL === 'https://script.google.com/macros/s/AKfycbzfW1i5qPXj4p37b-qBJLJPEqGY5MKp-m4vru3azQcjCXFQOQBKMLSk2Hvkjvsnk2lt/exec') {
     downloadCSV(row); showThankYou(true); return;
   }
   try {
